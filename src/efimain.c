@@ -26,7 +26,21 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
     Print(CheckStandardEFIError(Status));
     if(Status == EFI_SUCCESS)
     {
-        Print(L"Loading graphics...");
+        Print(L"Creating Event...");
+		EFI_EVENT event;
+
+        Status = SystemTable->BootServices->CreateEvent(EVT_TIMER, 0, NULL, NULL, &event);
+		Print(CheckStandardEFIError(Status));
+		
+		Print(L"Setting Timer...");
+		Status = SystemTable->BootServices->SetTimer(event, TimerRelative, 1000);
+		Print(CheckStandardEFIError(Status));
+
+		Print(L"Closing Event...");
+		Status = SystemTable->BootServices->CloseEvent(event);
+		Print(CheckStandardEFIError(Status));
+		
+		Print(L"Loading graphics...");
         CreateFilledBox(50, 50, 100, 200, ORANGE);
         CreateFilledBox(60, 60, 80, 30, RED);
         
@@ -34,8 +48,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
         SetPixel(65, 65);
         
         SetColor(EFI_YELLOW);
-        SetTextPosition(3, 8);
-        Print(L"\r\nWe have Graphics !!");
+        Print(L"We have Graphics !!");
     }
     
     SetColor(EFI_GREEN);

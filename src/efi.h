@@ -48,6 +48,16 @@ typedef void                *EFI_EVENT;
 typedef UINT64              EFI_PHYSICAL_ADDRESS;
 typedef UINT64              EFI_VIRTUAL_ADDRESS;
 
+#define EVT_TIMER                           0x80000000
+#define EVT_RUNTIME                         0x40000000
+
+#define EVT_NOTIFY_WAIT                     0x00000100
+#define EVT_NOTIFY_SIGNAL                   0x00000200
+
+#define EVT_SIGNAL_EXIT_BOOT_SERVICES       0x00000201
+#define EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE   0x60000202
+
+
 typedef struct EFI_GUID
 {
     UINT32    Data1;
@@ -187,7 +197,7 @@ typedef EFI_STATUS (*EFI_FREE_PAGES)(EFI_PHYSICAL_ADDRESS Memory, UINTN Pages);
 typedef EFI_STATUS (*EFI_GET_MEMORY_MAP)(UINTN *MemoryMapSize, EFI_MEMORY_DESCRIPTOR *MemoryMap, UINTN *MapKey, UINTN *DescriptorSize, UINT32 *DescriptorVersion);
 typedef EFI_STATUS (*EFI_ALLOCATE_POOL)(UINTN PoolType, UINTN Size, void **Buffer);
 typedef EFI_STATUS (*EFI_FREE_POOL)(void *Buffer);
-typedef EFI_STATUS (*EFI_CREATE_EVENT)(UINT32 Type, EFI_TPL NotifyTpl, EFI_EVENT_NOTIFY NotifyFunction, void *NotifyContext, EFI_GUID *EventGroup, EFI_EVENT *Event);
+typedef EFI_STATUS (*EFI_CREATE_EVENT)(UINT32 Type, EFI_TPL NotifyTpl, EFI_EVENT_NOTIFY NotifyFunction, void *NotifyContext, EFI_EVENT *Event);
 typedef EFI_STATUS (*EFI_SET_TIMER)(EFI_EVENT Event, EFI_TIMER_DELAY Type, UINT64 TriggerTime);
 typedef EFI_STATUS (*EFI_WAIT_FOR_EVENT)(UINTN NumberOfEvents, EFI_EVENT *Event, UINTN *Index);
 typedef EFI_STATUS (*EFI_SIGNAL_EVENT)(EFI_EVENT Event);

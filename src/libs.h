@@ -4,6 +4,8 @@
 #ifndef LIBS_H
 #define LIBS_H
 
+#define NULL (void*)0
+
              // ARGB             
 #define ORANGE 0xffffa500
 #define CYAN   0xff00ffff

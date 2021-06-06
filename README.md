@@ -1,5 +1,7 @@
 # UEFI Bootable Space Invaders game
 
+Still in development. Coming soon...  
+
 The Unified Extensible Firmware Interface ( UEFI ) code I have written from scratch.  
 
 Original 2.9 Specs PDF  
@@ -15,7 +17,7 @@ https://www.osforensics.com/tools/mount-disk-images.html
 
 **NOTE : I will add a makefile once I am ready.  
 
-Still in development. Coming soon...  
+Currently I am working on adding timer functionality.  
 
 **Progress so far**  
 ![Current Progress](current.png)
