@@ -17,7 +17,9 @@ https://www.osforensics.com/tools/mount-disk-images.html
 
 **NOTE : I will add a makefile once I am ready.  
 
-Currently I am working on adding timer functionality.  
+The UEFI has a stall function, kind of like a delay. We can use this to set up a frame rate to have smooth transitions in movement. The picture below shows 3 dots every 18 milliseconds.  
+
+Current progress is to create the sprites.  
 
 **Progress so far**  
 ![Current Progress](current.png)
