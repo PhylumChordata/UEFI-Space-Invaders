@@ -1,2 +1,3 @@
-# UEFI-Space-Invaders
-UEFI Bootable Space Invaders game
+# UEFI Bootable Space Invaders game
+
+Still in development. Coming soon...  
