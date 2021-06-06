@@ -1,3 +1,6 @@
+// UEFI Bootable Space Invaders Game - ThatOSDev ( 2021 )
+// https://github.com/ThatOSDev/UEFI-Space-Invaders
+
 #pragma once
 
 #define EFI_SUCCESS               0x0000000000000000

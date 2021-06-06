@@ -1,3 +1,6 @@
+// UEFI Bootable Space Invaders Game - ThatOSDev ( 2021 )
+// https://github.com/ThatOSDev/UEFI-Space-Invaders
+
 #include "efi.h"
 #include "ErrorCodes.h"
 #include "libs.h"

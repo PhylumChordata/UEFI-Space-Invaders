@@ -1,3 +1,6 @@
+// UEFI Bootable Space Invaders Game - ThatOSDev ( 2021 )
+// https://github.com/ThatOSDev/UEFI-Space-Invaders
+
 #ifndef LIBS_H
 #define LIBS_H
 
