@@ -16,3 +16,6 @@ https://www.osforensics.com/tools/mount-disk-images.html
 **NOTE : I will add a makefile once I am ready.  
 
 Still in development. Coming soon...  
+
+**Progress so far**  
+![Current Progress](current.png)
