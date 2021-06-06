@@ -48,6 +48,8 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
     Print(L"Hit Any Key");
     
     HitAnyKey();
-   
+	
+	COLD_REBOOT();
+
 	return 0;
 }

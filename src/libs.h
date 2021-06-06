@@ -74,4 +74,19 @@ void CreateFilledBox(UINT32 xPos, UINT32 yPos, UINT32 w, UINT32 h, UINT32 color)
     gop->Blt(gop, &GraphicsColor, 0, 0, 0, xPos, yPos, w, h, 0);
 }
 
+void COLD_REBOOT()
+{
+    SystemTable->RuntimeServices->ResetSystem(EfiResetCold, EFI_SUCCESS, 0, 0);
+}
+
+void WARM_REBOOT()
+{
+    SystemTable->RuntimeServices->ResetSystem(EfiResetWarm, EFI_SUCCESS, 0, 0);
+}
+
+void SHUTDOWN()
+{
+    SystemTable->RuntimeServices->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, 0);
+}
+
 #endif // LIBS_H
