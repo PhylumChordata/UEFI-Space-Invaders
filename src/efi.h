@@ -34,12 +34,15 @@ typedef unsigned char       UINT8;
 typedef unsigned short      UINT16;
 typedef unsigned int        UINT32;
 typedef unsigned long long  UINT64;
-typedef unsigned short      CHAR16;
+
+typedef unsigned short int  uint16_t;
+typedef uint16_t            CHAR16;
+
 typedef unsigned char       BOOLEAN;
 
 typedef int                 INT32;
 
-typedef unsigned long long  UINTN;     // Uncomment for 64-Bit
+typedef unsigned long long  UINTN;     // 64-Bit
 
 typedef UINTN               EFI_TPL;
 typedef void                *EFI_HANDLE;
