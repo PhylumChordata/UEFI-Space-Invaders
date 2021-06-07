@@ -35,8 +35,12 @@ typedef unsigned short      UINT16;
 typedef unsigned int        UINT32;
 typedef unsigned long long  UINT64;
 
+// NOTE : CHAR16 is supposed to be Minimum of 16-Bit.
+//        But on some machines it will be 32-Bit.
+//        I included both typedefs as a means of reference.
 typedef unsigned short int  uint16_t;
-typedef uint16_t            CHAR16;
+typedef unsigned short int  uint_least16_t;
+typedef uint_least16_t      CHAR16;
 
 typedef unsigned char       BOOLEAN;
 
