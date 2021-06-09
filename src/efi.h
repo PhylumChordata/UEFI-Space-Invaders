@@ -4,6 +4,7 @@
 #ifndef EFI_H
 #define EFI_H
 
+// UEFI 2.9 Specs PDF Page 457
 #define EFI_BLACK                               0x00
 #define EFI_BLUE                                0x01
 #define EFI_GREEN                               0x02
@@ -30,23 +31,27 @@
 #define EFI_BACKGROUND_BROWN                    0x60
 #define EFI_BACKGROUND_LIGHTGRAY                0x70
 
+// NOTE : CHAR16 is supposed to be Minimum of 16-Bit.
+//        But on some machines it will be 32-Bit.
+//        I included both typedefs as a means of reference.
+// UEFI 2.9 Specs PDF Page 20
+typedef unsigned short int  uint16_t;
+typedef unsigned short int  uint_least16_t;
+typedef uint_least16_t          CHAR16;
+
 typedef unsigned char       UINT8;
 typedef unsigned short      UINT16;
 typedef unsigned int        UINT32;
 typedef unsigned long long  UINT64;
 
-// NOTE : CHAR16 is supposed to be Minimum of 16-Bit.
-//        But on some machines it will be 32-Bit.
-//        I included both typedefs as a means of reference.
-typedef unsigned short int  uint16_t;
-typedef unsigned short int  uint_least16_t;
-typedef uint_least16_t      CHAR16;
-
-typedef unsigned char       BOOLEAN;
-
 typedef int                 INT32;
 
-typedef unsigned long long  UINTN;     // 64-Bit
+// UINTN can be used for both 64-Bit ( 8 Bytes ) and 32-Bit ( 4 Bytes ).
+// We set this for 64-Bit since this tutorial series is 64-Bit only.
+// UEFI 2.9 Specs PDF Page 20
+typedef unsigned long long      UINTN;
+
+typedef unsigned char       BOOLEAN;
 
 typedef UINTN               EFI_TPL;
 typedef void                *EFI_HANDLE;
@@ -55,16 +60,8 @@ typedef void                *EFI_EVENT;
 typedef UINT64              EFI_PHYSICAL_ADDRESS;
 typedef UINT64              EFI_VIRTUAL_ADDRESS;
 
-#define EVT_TIMER                           0x80000000
-#define EVT_RUNTIME                         0x40000000
-
-#define EVT_NOTIFY_WAIT                     0x00000100
-#define EVT_NOTIFY_SIGNAL                   0x00000200
-
-#define EVT_SIGNAL_EXIT_BOOT_SERVICES       0x00000201
-#define EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE   0x60000202
-
-
+// The struct to hold our GUID data.
+// UEFI 2.9 Specs PDF Page 181
 typedef struct EFI_GUID
 {
     UINT32    Data1;
@@ -73,13 +70,17 @@ typedef struct EFI_GUID
     UINT8     Data4[8];
 } EFI_GUID;
 
+// The GUID to set the correct Protocol.
+// UEFI 2.9 Specs PDF Page 485
 struct EFI_GUID EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID    = {0x9042a9de, 0x23dc, 0x4a38, {0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a}};
 
+// We are forward declaring these structs so that the function typedefs can operate.
 struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL;
 struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL;
 struct EFI_BOOT_SERVICES;
 struct EFI_GRAPHICS_OUTPUT_PROTOCOL;
 
+// UEFI 2.9 Specs PDF Page 258
 typedef struct EFI_TIME
 {
 	UINT16     Year;
@@ -95,6 +96,7 @@ typedef struct EFI_TIME
 	UINT8      Pad2;
 } EFI_TIME;
 
+// UEFI 2.9 Specs PDF Page 260
 typedef struct EFI_TIME_CAPABILITIES
 {
 	UINT32      Resolution;
@@ -102,6 +104,8 @@ typedef struct EFI_TIME_CAPABILITIES
 	BOOLEAN     SetsToZero;
 } EFI_TIME_CAPABILITIES;
 
+// How we reboot the computer.
+// UEFI 2.9 Specs PDF Page 269
 typedef enum EFI_RESET_TYPE
 {
     EfiResetCold,
@@ -110,12 +114,15 @@ typedef enum EFI_RESET_TYPE
     EfiResetPlatformSpecific
 } EFI_RESET_TYPE;
 
+// UEFI 2.9 Specs PDF Page 102
 typedef struct EFI_CONFIGURATION_TABLE
 {
     EFI_GUID                    VendorGuid;
     void                        *VendorTable;
 } EFI_CONFIGURATION_TABLE;
 
+// This is the main EFI header for all of the EFI.
+// UEFI 2.9 Specs PDF Page 93
 typedef struct EFI_TABLE_HEADER
 {
     UINT64    Signature;
@@ -125,6 +132,7 @@ typedef struct EFI_TABLE_HEADER
     UINT32    Reserved;
 } EFI_TABLE_HEADER;
 
+// UEFI 2.9 Specs PDF Page 166
 typedef enum EFI_ALLOCATE_TYPE
 {
     AllocateAnyPages,
@@ -133,6 +141,7 @@ typedef enum EFI_ALLOCATE_TYPE
     MaxAllocateType
 } EFI_ALLOCATE_TYPE;
 
+// UEFI 2.9 Specs PDF Page 160
 typedef enum EFI_TIMER_DELAY
 {
     TimerCancel,
@@ -140,6 +149,7 @@ typedef enum EFI_TIMER_DELAY
     TimerRelative
 } EFI_TIMER_DELAY;
 
+// UEFI 2.9 Specs PDF Page 170
 typedef struct EFI_MEMORY_DESCRIPTOR
 {
     UINT32                   Type;
@@ -149,11 +159,13 @@ typedef struct EFI_MEMORY_DESCRIPTOR
     UINT64                   Attribute;
 } EFI_MEMORY_DESCRIPTOR;
 
+// UEFI 2.9 Specs PDF Page 181
 typedef enum EFI_INTERFACE_TYPE
 {
     EFI_NATIVE_INTERFACE
 } EFI_INTERFACE_TYPE;
 
+// UEFI 2.9 Specs PDF Page 187
 typedef enum EFI_LOCATE_SEARCH_TYPE
 {
     AllHandles,
@@ -161,6 +173,7 @@ typedef enum EFI_LOCATE_SEARCH_TYPE
     ByProtocol
 } EFI_LOCATE_SEARCH_TYPE;
 
+// UEFI 2.9 Specs PDF Page 202
 typedef struct EFI_OPEN_PROTOCOL_INFORMATION_ENTRY
 {
     EFI_HANDLE                  AgentHandle;
@@ -169,6 +182,7 @@ typedef struct EFI_OPEN_PROTOCOL_INFORMATION_ENTRY
     UINT32                      OpenCount;
 } EFI_OPEN_PROTOCOL_INFORMATION_ENTRY;
 
+// UEFI 2.9 Specs PDF Page 291
 typedef struct EFI_DEVICE_PATH_PROTOCOL
 {
     UINT8   Type;
@@ -176,6 +190,7 @@ typedef struct EFI_DEVICE_PATH_PROTOCOL
     UINT8   Length[2];
 } EFI_DEVICE_PATH_PROTOCOL;
 
+// UEFI 2.9 Specs PDF Page 272
 typedef struct EFI_CAPSULE_HEADER
 {
     EFI_GUID                    CapsuleGuid;
@@ -184,16 +199,27 @@ typedef struct EFI_CAPSULE_HEADER
     UINT32                      CapsuleImageSize;
 } EFI_CAPSULE_HEADER;
 
+// We check for the scan code of the key with this struct
+// Notice the 16-Bit interface, instead of the normal 8-Bit.
+// This is because EFI uses UNICODE.
+// UEFI 2.9 Specs PDF Page 448
 typedef struct EFI_INPUT_KEY
 {
 	UINT16    ScanCode;
 	UINT16    UnicodeChar;
 }EFI_INPUT_KEY;
 
+// We check for the event.
 typedef void(*EFI_EVENT_NOTIFY)(EFI_EVENT Event, void *Context);
+
+// We use this to reset the buffer.
 typedef EFI_STATUS (*EFI_INPUT_RESET)(struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL *This, BOOLEAN ExtendedVerification);
+
+// This is where we actually read the key stroke from the keyboard buffer.
 typedef EFI_STATUS (*EFI_INPUT_READ_KEY)(struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL *This, EFI_INPUT_KEY *Key);
 
+// The struct for the keyboard input.
+// UEFI 2.9 Specs PDF Page 446
 typedef struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL
 {
 	EFI_INPUT_RESET        Reset;
@@ -201,6 +227,8 @@ typedef struct EFI_SIMPLE_TEXT_INPUT_PROTOCOL
 	EFI_EVENT              WaitForKey;
 } EFI_SIMPLE_TEXT_INPUT_PROTOCOL;
 
+// We use this for setting the cursor position.
+// UEFI 2.9 Specs PDF Page 450
 typedef struct SIMPLE_TEXT_OUTPUT_MODE
 {
     INT32                       MaxMode;
@@ -211,16 +239,32 @@ typedef struct SIMPLE_TEXT_OUTPUT_MODE
     BOOLEAN                     CursorVisible;
 } SIMPLE_TEXT_OUTPUT_MODE;
 
+// This function resets the string output.
 typedef EFI_STATUS (*EFI_TEXT_RESET)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, BOOLEAN ExtendedVerification);
+
+// This function prints the string output to the screen.
 typedef EFI_STATUS (*EFI_TEXT_STRING)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, CHAR16 *String);
+
+// We are not using these next three functions,
+// but they are required in order for the struct to be filled out.
 typedef EFI_STATUS (*EFI_TEXT_TEST_STRING)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, CHAR16 *String);
 typedef EFI_STATUS (*EFI_TEXT_QUERY_MODE)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, UINTN ModeNumber, UINTN *Columns, UINTN *Rows);
 typedef EFI_STATUS (*EFI_TEXT_SET_MODE)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, UINTN ModeNumber);
+
+// This is the function we use to set the color attribute of the text.
 typedef EFI_STATUS (*EFI_TEXT_SET_ATTRIBUTE)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, UINTN Attribute);
+
+// This function we use to clear the screen buffer.
 typedef EFI_STATUS (*EFI_TEXT_CLEAR_SCREEN)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This);
+
+// This function is used to set the cursor position.
 typedef EFI_STATUS (*EFI_TEXT_SET_CURSOR_POSITION)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, UINTN Column, UINTN Row);
+
+// With this we can make the cursor visible or not.
 typedef EFI_STATUS (*EFI_TEXT_ENABLE_CURSOR)(struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This, BOOLEAN Visible);
 
+// The struct for the EFI Text Output protocols.
+// UEFI 2.9 Specs PDF Page 449
 typedef struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL
 {
     EFI_TEXT_RESET                         Reset;
@@ -242,7 +286,7 @@ typedef EFI_STATUS (*EFI_FREE_PAGES)(EFI_PHYSICAL_ADDRESS Memory, UINTN Pages);
 typedef EFI_STATUS (*EFI_GET_MEMORY_MAP)(UINTN *MemoryMapSize, EFI_MEMORY_DESCRIPTOR *MemoryMap, UINTN *MapKey, UINTN *DescriptorSize, UINT32 *DescriptorVersion);
 typedef EFI_STATUS (*EFI_ALLOCATE_POOL)(UINTN PoolType, UINTN Size, void **Buffer);
 typedef EFI_STATUS (*EFI_FREE_POOL)(void *Buffer);
-typedef EFI_STATUS (*EFI_CREATE_EVENT)(UINT32 Type, EFI_TPL NotifyTpl, EFI_EVENT_NOTIFY NotifyFunction, void *NotifyContext, EFI_EVENT *Event);
+typedef EFI_STATUS (*EFI_CREATE_EVENT)(UINT32 Type, EFI_TPL NotifyTpl, EFI_EVENT_NOTIFY NotifyFunction, void *NotifyContext, EFI_GUID *EventGroup, EFI_EVENT *Event);
 typedef EFI_STATUS (*EFI_SET_TIMER)(EFI_EVENT Event, EFI_TIMER_DELAY Type, UINT64 TriggerTime);
 typedef EFI_STATUS (*EFI_WAIT_FOR_EVENT)(UINTN NumberOfEvents, EFI_EVENT *Event, UINTN *Index);
 typedef EFI_STATUS (*EFI_SIGNAL_EVENT)(EFI_EVENT Event);
@@ -279,6 +323,8 @@ typedef EFI_STATUS (*EFI_COPY_MEM)(void *Destination, void *Source, UINTN Length
 typedef EFI_STATUS (*EFI_SET_MEM)(void *Buffer, UINTN Size, UINT8 Value);
 typedef EFI_STATUS (*EFI_CREATE_EVENT_EX)(UINT32 Type, EFI_TPL NotifyTpl, EFI_EVENT_NOTIFY NotifyFunction, void *NotifyContext, EFI_GUID *EventGroup, EFI_EVENT *Event);
 
+// These are the bootservices that run before you exit the EFI.
+// UEFI 2.9 Specs PDF Page 97
 typedef struct EFI_BOOT_SERVICES
 {
     EFI_TABLE_HEADER                                 Hdr;
@@ -328,6 +374,7 @@ typedef struct EFI_BOOT_SERVICES
     EFI_CREATE_EVENT_EX                              CreateEventEx;
 } EFI_BOOT_SERVICES;
 
+// Runtime services are services that run before and after you exit the EFI environment.
 typedef EFI_STATUS (*EFI_GET_TIME)(EFI_TIME *Time, EFI_TIME_CAPABILITIES *Capabilities);
 typedef EFI_STATUS (*EFI_SET_TIME)(EFI_TIME *Time);
 typedef EFI_STATUS (*EFI_GET_WAKEUP_TIME)(BOOLEAN *Enabled, BOOLEAN *Pending, EFI_TIME *Time);
@@ -342,7 +389,7 @@ typedef EFI_STATUS (*EFI_RESET_SYSTEM)(EFI_RESET_TYPE ResetType, EFI_STATUS Rese
 typedef EFI_STATUS (*EFI_UPDATE_CAPSULE)(EFI_CAPSULE_HEADER **CapsuleHeaderArray, UINTN CapsuleCount, EFI_PHYSICAL_ADDRESS ScatterGatherList);
 typedef EFI_STATUS (*EFI_QUERY_CAPSULE_CAPABILITIES)(EFI_CAPSULE_HEADER **CapsuleHeaderArray, UINTN CapsuleCount, UINT64 *MaximumCapsuleSize, EFI_RESET_TYPE *ResetType);
 typedef EFI_STATUS (*EFI_QUERY_VARIABLE_INFO)(UINT32 Attributes, UINT64 *MaximumVariableStorageSize, UINT64 *RemainingVariableStorageSize, UINT64 *MaximumVariableSize);
-
+// UEFI 2.9 Specs PDF Page 100
 typedef struct EFI_RUNTIME_SERVICES
 {
     EFI_TABLE_HEADER                    Hdr;
@@ -362,6 +409,10 @@ typedef struct EFI_RUNTIME_SERVICES
     EFI_QUERY_VARIABLE_INFO             QueryVariableInfo;
 } EFI_RUNTIME_SERVICES;
 
+// EFI has a system and runtime. This system table is the first struct
+// called from the main section. Think of it as the entry point
+// to all of the EFI functions.
+// UEFI 2.9 Specs PDF Page 94
 typedef struct EFI_SYSTEM_TABLE
 {
 	EFI_TABLE_HEADER                              hdr;
@@ -380,6 +431,7 @@ typedef struct EFI_SYSTEM_TABLE
 } EFI_SYSTEM_TABLE;
 
 // GRAPHICS
+// UEFI 2.9 Specs PDF Page 491
 typedef enum EFI_GRAPHICS_OUTPUT_BLT_OPERATION
 {
     EfiBltVideoFill,
@@ -389,6 +441,7 @@ typedef enum EFI_GRAPHICS_OUTPUT_BLT_OPERATION
     EfiGraphicsOutputBltOperationMax
 } EFI_GRAPHICS_OUTPUT_BLT_OPERATION;
 
+// UEFI 2.9 Specs PDF Page 491
 typedef struct EFI_GRAPHICS_OUTPUT_BLT_PIXEL
 {
     UINT8   Blue;
@@ -397,6 +450,7 @@ typedef struct EFI_GRAPHICS_OUTPUT_BLT_PIXEL
     UINT8   Reserved;
 } EFI_GRAPHICS_OUTPUT_BLT_PIXEL;
 
+// UEFI 2.9 Specs PDF Page 486
 typedef enum EFI_GRAPHICS_PIXEL_FORMAT
 {
     PixelRedGreenBlueReserved8BitPerColor,
@@ -406,6 +460,7 @@ typedef enum EFI_GRAPHICS_PIXEL_FORMAT
     PixelFormatMax
 } EFI_GRAPHICS_PIXEL_FORMAT;
 
+// UEFI 2.9 Specs PDF Page 485
 typedef struct EFI_PIXEL_BITMASK
 {
     UINT32    RedMask;
@@ -414,6 +469,7 @@ typedef struct EFI_PIXEL_BITMASK
     UINT32    ReservedMask;
 } EFI_PIXEL_BITMASK;
 
+// UEFI 2.9 Specs PDF Page 486
 typedef struct EFI_GRAPHICS_OUTPUT_MODE_INFORMATION
 {
     UINT32                      Version;
@@ -424,6 +480,7 @@ typedef struct EFI_GRAPHICS_OUTPUT_MODE_INFORMATION
     UINT32                      PixelsPerScanLine;
 } EFI_GRAPHICS_OUTPUT_MODE_INFORMATION;
 
+// UEFI 2.9 Specs PDF Page 488
 typedef struct EFI_GRAPHICS_OUTPUT_PROTOCOL_MODE
 {
     UINT32                                MaxMode;
@@ -438,6 +495,7 @@ typedef EFI_STATUS (*EFI_GRAPHICS_OUTPUT_PROTOCOL_QUERY_MODE)(struct EFI_GRAPHIC
 typedef EFI_STATUS (*EFI_GRAPHICS_OUTPUT_PROTOCOL_SET_MODE)(struct EFI_GRAPHICS_OUTPUT_PROTOCOL *This, UINT32 ModeNumber);
 typedef EFI_STATUS (*EFI_GRAPHICS_OUTPUT_PROTOCOL_BLT)(struct EFI_GRAPHICS_OUTPUT_PROTOCOL *This, EFI_GRAPHICS_OUTPUT_BLT_PIXEL *BltBuffer, EFI_GRAPHICS_OUTPUT_BLT_OPERATION BltOperation, UINTN SourceX, UINTN SourceY, UINTN DestinationX, UINTN DestinationY, UINTN Width, UINTN Height, UINTN Delta);
 
+// UEFI 2.9 Specs PDF Page 485
 typedef struct EFI_GRAPHICS_OUTPUT_PROTOCOL
 {
     EFI_GRAPHICS_OUTPUT_PROTOCOL_QUERY_MODE  QueryMode;

@@ -3,7 +3,7 @@
 
 #include "efi.h"
 #include "ErrorCodes.h"
-#include "libs.h"
+#include "efilibs.h"
 
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
 {
@@ -26,15 +26,17 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
     Print(CheckStandardEFIError(Status));
     if(Status == EFI_SUCCESS)
     {
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 60; i++)
 		{
-			Print(L"...   ");
-			SystemTable->BootServices->Stall(18000);
+			Print(L".");
+                        Delay(18);
 		}
 		
 		Print(L"\r\nLoading graphics...");
-        CreateFilledBox(50, 50, 100, 200, ORANGE);
-        CreateFilledBox(60, 60, 80, 30, RED);
+        SetGraphicsColor(ORANGE);
+        CreateFilledBox(50, 50, 100, 200);
+        SetGraphicsColor(RED);
+        CreateFilledBox(60, 60, 80, 30);
         
         SetGraphicsColor(BLACK);
         SetPixel(65, 65);
