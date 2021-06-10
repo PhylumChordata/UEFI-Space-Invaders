@@ -1,5 +1,7 @@
 # UEFI Bootable Space Invaders game
 
+**DISCORD** : https://discord.gg/6gxEF3QCtB  
+
 Still in development. Coming soon...  
 
 The Unified Extensible Firmware Interface ( UEFI ) code I have written from scratch.  
