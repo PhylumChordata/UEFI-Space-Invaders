@@ -46,12 +46,60 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
     }
     
     SetColor(EFI_GREEN);
-    SetTextPosition(2, 11);
-    Print(L"Hit Any Key");
-    
-    HitAnyKey();
-	
-	COLD_REBOOT();
+    SetTextPosition(2, 23);
+    Print(L"Hit q to quit | Hit r to reboot");
 
-	return 0;
+    ResetKeyboard();
+
+    SetColor(EFI_WHITE);
+
+	UINTN u = 0;
+	unsigned int x = 5;
+	BOOLEAN y = 1;
+
+    while(1)
+    {
+		u++;
+		if(u > 36000)   // This is 36 * 1000 ==> 36 milliseconds
+		{
+                        Delay1();
+			u = 0;
+			SetTextPosition(x, 17);
+			Print(L"   ...   ");
+			if(y == 1)
+			{
+			    x++;
+			} else {
+				x--;
+			}
+			if(x < 5)
+			{
+				x = 5;
+				y = 1;
+			} else if(x > 50)
+			{
+				x = 50;
+				y = 0;
+			}
+		}
+                EFI_STATUS Status = CheckKey();
+                if(Status == EFI_SUCCESS)
+                {
+ 		    if(GetKey('q') == 1)
+		    {
+                        SHUTDOWN();
+		        break;
+		    }
+                    if(GetKey('r') == 1)
+                    {
+                        COLD_REBOOT();
+		        break;
+                    }
+                }
+    }
+
+    COLD_REBOOT();
+
+    // We should not make it to this point.
+    return EFI_SUCCESS;
 }
