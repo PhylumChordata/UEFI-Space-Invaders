@@ -4,9 +4,17 @@
 #include "efi.h"
 #include "ErrorCodes.h"
 #include "efilibs.h"
+#include "tosdfont.h"
+#include "invadersprites.h"
 
-EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
+// This is like int main() in a typical C program.
+// In this case, we create an ImageHandle for the overall EFI interface,
+// as well as a System Table pointer to the EFI_SYSTEM_TABLE struct.
+// UEFI 2.9 Specs PDF Page 91
+EFI_STATUS efi_main(EFI_HANDLE IH, EFI_SYSTEM_TABLE *ST)
 {
+    // We setup this global variable in the efilibs.h file.
+    ImageHandle = IH;
     SystemTable = ST;
     
     ResetScreen();
@@ -14,43 +22,64 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
     SetColor(EFI_WHITE);
     SetTextPosition(3, 2);
     Print(L"Space Invaders within the EFI Environment");
-
+    
     SetColor(EFI_GREEN);
     SetTextPosition(8, 4);
     Print(L"Hit Any Key to see test Graphics");
-    
-    HitAnyKey();
 
-    Print(L"\r\n\r\nLoading Graphics Output Protocol ... ");
-    EFI_STATUS Status = SystemTable->BootServices->LocateProtocol(&EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID, 0, (void**)&gop);
-    Print(CheckStandardEFIError(Status));
-    if(Status == EFI_SUCCESS)
-    {
-		for(int i = 0; i < 60; i++)
-		{
-			Print(L".");
-                        Delay(18);
-		}
-		
-		Print(L"\r\nLoading graphics...");
-        SetGraphicsColor(ORANGE);
-        CreateFilledBox(50, 50, 100, 200);
-        SetGraphicsColor(RED);
-        CreateFilledBox(60, 60, 80, 30);
-        
-        SetGraphicsColor(BLACK);
-        SetPixel(65, 65);
-        
-        SetColor(EFI_YELLOW);
-        Print(L"We have Graphics !!");
-    }
+    HitAnyKey();
     
+    InitializeGOP();
+	
+	SetGraphicsColor(ORANGE);
+
+	UINT32 SpriteSize = sizeof(sprites)/sizeof(sprites[0]);
+	
+	pixelpos->PixelxPos = 400;
+	pixelpos->PixelyPos = 400;
+
+    UINT32 mcX = pixelpos->PixelxPos;
+    UINT32 mcY = pixelpos->PixelyPos;
+	UINT32 pPos = 0;
+	UINT32 sPos = 0;
+	
+    for(UINT32 t = 0; t < SpriteSize; t++)
+	{
+		pPos++;
+		if(pPos > 8)
+		{
+			pPos = 1;
+			mcY += 2;
+			mcX = pixelpos->PixelxPos;
+			sPos++;
+			if(sPos > 4)
+			{
+				sPos = 1;
+				mcY += 16;
+			}
+		}
+		UINT32 ASCIIColor = sprites[t];
+		switch(ASCIIColor)
+		{
+			case 0:
+			{
+				break;
+			}
+			case 1:
+			{
+				CreateFilledBox(mcX, mcY,2, 2);
+				break;
+			}
+		}
+		mcX += 2;
+	}
+
     SetColor(EFI_GREEN);
     SetTextPosition(2, 23);
     Print(L"Hit q to quit | Hit r to reboot");
 
-    ResetKeyboard();
-
+	ResetKeyboard();
+	
     SetColor(EFI_WHITE);
 
 	UINTN u = 0;
@@ -64,7 +93,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
 		{
                         Delay1();
 			u = 0;
-			SetTextPosition(x, 17);
+			SetTextPosition(x, 20);
 			Print(L"   ...   ");
 			if(y == 1)
 			{
@@ -98,6 +127,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *ST)
                 }
     }
 
+    // We should not make it to this point.
     COLD_REBOOT();
 
     // We should not make it to this point.

@@ -16,6 +16,7 @@
 #define WHITE  0xffffffff
 #define BLACK  0xff000000
 
+EFI_HANDLE ImageHandle;
 EFI_SYSTEM_TABLE* SystemTable;
 EFI_GRAPHICS_OUTPUT_PROTOCOL* gop;
 EFI_GRAPHICS_OUTPUT_BLT_PIXEL GraphicsColor;
@@ -109,6 +110,17 @@ void CreateFilledBox(UINT32 xPos, UINT32 yPos, UINT32 w, UINT32 h)
     gop->Blt(gop, &GraphicsColor, EfiBltVideoFill, 0, 0, xPos, yPos, w, h, 0);
 }
 
+void InitializeGOP()
+{
+    // We initialize the Graphics Output Protocol.
+    // This is used instead of the VGA interface.
+    SetColor(EFI_BROWN);
+    Print(L"\r\n\r\nLoading Graphics Output Protocol ... ");
+    EFI_STATUS Status = SystemTable->BootServices->LocateProtocol(&EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID, 0, (void**)&gop);
+    SetColor(EFI_CYAN);
+    Print(CheckStandardEFIError(Status));
+}
+
 void Delay(UINTN d)
 {
     // The Stall function is set is microseconds. So you have to convert
@@ -142,5 +154,13 @@ void SHUTDOWN()
     // WORKS in QEMU !!!
     SystemTable->RuntimeServices->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, 0);
 }
+
+typedef struct PIXELPOSITIONS
+{
+    UINT32 PixelxPos;
+    UINT32 PixelyPos;
+} PIXELPOSITIONS;
+
+PIXELPOSITIONS* pixelpos;
 
 #endif // EFILIBS_H
