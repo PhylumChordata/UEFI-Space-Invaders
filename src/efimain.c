@@ -35,8 +35,8 @@ EFI_STATUS efi_main(EFI_HANDLE IH, EFI_SYSTEM_TABLE *ST)
 
 	UINT32 SpriteSize = sizeof(sprites)/sizeof(sprites[0]);
 	
-	pixelpos->PixelxPos = 400;
-	pixelpos->PixelyPos = 400;
+	pixelpos->PixelxPos = 300;
+	pixelpos->PixelyPos = 300;
 
     UINT32 mcX = pixelpos->PixelxPos;
     UINT32 mcY = pixelpos->PixelyPos;
@@ -52,9 +52,9 @@ EFI_STATUS efi_main(EFI_HANDLE IH, EFI_SYSTEM_TABLE *ST)
 			mcY += 2;
 			mcX = pixelpos->PixelxPos;
 			sPos++;
-			if(sPos > 4)
+			if(sPos > 3)
 			{
-				sPos = 1;
+				sPos = 0;
 				mcY += 16;
 			}
 		}
