@@ -17,10 +17,7 @@ https://nuwen.net/mingw.html   ( This works in Windows. Cross-compiler is not ne
 OSFMount  
 https://www.osforensics.com/tools/mount-disk-images.html  
 
-**NOTE : I will add a makefile once I am ready.  
-
-
-Current progress is to setup the sprite layout.  
+**Current progress** : Game Logic and Ship movement. Animated sprites already working.  
 
 **Progress so far**  
 ![Current Progress](current.png)
