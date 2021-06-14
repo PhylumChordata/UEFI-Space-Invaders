@@ -17,7 +17,9 @@ https://nuwen.net/mingw.html   ( This works in Windows. Cross-compiler is not ne
 OSFMount  
 https://www.osforensics.com/tools/mount-disk-images.html  
 
-**Current progress** : Game Logic and Ship movement. Animated sprites already working.  
+Animated sprites already working.  
+
+**TODO** : Game Logic, better Timer, Ship firing and movement.  
 
 **Progress so far**  
 ![Current Progress](current.png)
