@@ -1,10 +1,10 @@
-# UEFI Bootable Space Invaders game
+# UEFI based Bootable Space Invaders game
 
 **DISCORD** : https://discord.gg/6gxEF3QCtB  
 
 Still in development. Coming soon...  
 
-The Unified Extensible Firmware Interface ( UEFI ) code I have written from scratch.  
+The Unified Extensible Firmware Interface ( UEFI ) bootloader code I have written from scratch.  
 
 Original 2.9 Specs PDF  
 https://uefi.org/specifications  
@@ -19,9 +19,8 @@ https://www.osforensics.com/tools/mount-disk-images.html
 
 **NOTE : I will add a makefile once I am ready.  
 
-The UEFI has a stall function, kind of like a delay. We can use this to set up a frame rate to have smooth transitions in movement. The picture below shows 3 dots every 18 milliseconds.  
 
-Current progress is to create the sprites.  
+Current progress is to setup the sprite layout.  
 
 **Progress so far**  
 ![Current Progress](current.png)
