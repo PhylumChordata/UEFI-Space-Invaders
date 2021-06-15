@@ -16,6 +16,7 @@ https://nuwen.net/mingw.html   ( This works in Windows. Cross-compiler is not ne
 
 OSFMount  
 https://www.osforensics.com/tools/mount-disk-images.html  
+**NOTE :** I have now included BAT files with the command line switches to use OSFMount without the GUI interface.  
 
 Animated sprites already working.  
 
