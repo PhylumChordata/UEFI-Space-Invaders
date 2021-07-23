@@ -4,7 +4,6 @@
 #include "efi.h"
 #include "ErrorCodes.h"
 #include "efilibs.h"
-#include "tosdfont.h"
 #include "invadersprites.h"
 
 void UpdateSprite(UINT32 s, UINT32 row, UINT32 column, UINT32 xPos, UINT32 yPos, UINT32 spriteColor)
